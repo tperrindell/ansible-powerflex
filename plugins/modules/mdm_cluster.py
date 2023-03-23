@@ -1088,7 +1088,7 @@ class PowerFlexMdmCluster(object):
         """whether standby IPs present in standby MDMs"""
 
         if 'standbyMDMs' in cluster_details:
-            for stb_mdm in cluster_details['tieBreakers']:
+            for stb_mdm in cluster_details['standbyMDMs']:
                 current_stb_ips = stb_mdm['ips']
                 for ips in standby_ip:
                     if ips in current_stb_ips:
