@@ -1,6 +1,6 @@
 **Ansible Modules for Dell Technologies PowerFlex** 
 =========================================
-### Release Notes 1.3.0
+### Release notes 1.5.0
 
 >   © 2022 Dell Inc. or its subsidiaries. All rights reserved. Dell
 >   and other trademarks are trademarks of Dell Inc. or its
@@ -20,41 +20,35 @@ Modules for Dell Technologies (Dell) PowerFlex.
 -   [Distribution](#distribution)
 -   [Documentation](#documentation)
 
-Revision History
+Revision history
 ----------------
 The table in this section lists the revision history of this document.
 
 Table 1. Revision history
 
-| Revision | Date      | Description                                                 |
-|----------|-----------|-------------------------------------------------------------|
-| 01       | June 2022 | Current release of Ansible Modules for Dell PowerFlex 1.3.0 |
+| Revision | Date           | Description                                                 |
+|----------|----------------|-------------------------------------------------------------|
+| 01       | December 2022  | Current release of Ansible Modules for Dell PowerFlex 1.5.0 |
 
-Product Description
+Product description
 -------------------
 
 The Ansible modules for Dell PowerFlex are used to automate and orchestrate
 the deployment, configuration, and management of Dell PowerFlex storage
 systems. The capabilities of Ansible modules are managing volumes,
-storage pools, SDCs, snapshots, SDSs, devices, protection domain and MDM 
+storage pools, SDCs, snapshots, SDSs, replication consistency groups, devices, protection domain and MDM 
 cluster, and obtaining high-level information about a PowerFlex system information.
 The modules use playbooks to list, show, create, delete, and modify
 each of the entities.
 
-New Features and enhancements
+New features and enhancements
 -----------------------------
 Along with the previous release deliverables, this release supports following features - 
-- The Product Guide, Release Notes and ReadMe have been updated to adhere to the guidelines by the ansible community.
-- MDM cluster module supports following functionalities:
-  * Get MDM cluster details.
-  * Add a standby MDM.
-  * Remove a standby MDM.
-  * Modify attributes of an MDM.
-  * Change ownership of MDM cluster.
-  * Switch MDM cluster mode.
-  * Modify performance profile of MDM cluster.
-- Enabled the check_mode support for info module.
-- Added execution environment manifest file to support building an execution environment with ansible-builder.
+- Info module is enhanced to support the listing replication consistency groups.
+- Added New module for replication consistency groups.
+- Updated modules to adhere with ansible community guidelines.
+- Renamed gateway_host to hostname
+- Renamed verifycert to validate_certs.
 
 Known issues
 ------------
@@ -67,11 +61,11 @@ Limitations
 Distribution
 ------------
 The software package is available for download from the [Ansible Modules
-for PowerFlex GitHub](https://github.com/dell/ansible-powerflex/tree/1.3.0) page.
+for PowerFlex GitHub](https://github.com/dell/ansible-powerflex/tree/1.5.0) page.
 
 Documentation
 -------------
-The documentation is available on [Ansible Modules for PowerFlex GitHub](https://github.com/dell/ansible-powerflex/tree/1.3.0/docs)
+The documentation is available on [Ansible Modules for PowerFlex GitHub](https://github.com/dell/ansible-powerflex/tree/1.5.0/docs)
 page. It includes the following:
 
    - README

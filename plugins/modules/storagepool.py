@@ -1,4 +1,5 @@
 #!/usr/bin/python
+
 # Copyright: (c) 2021, Dell Technologies
 # Apache License version 2.0 (see MODULE-LICENSE or http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -34,28 +35,28 @@ options:
     - The name of the storage pool.
     - If more than one storage pool is found with the same name then
       protection domain id/name is required to perform the task.
-    - Mutually exclusive with storage_pool_id.
+    - Mutually exclusive with I(storage_pool_id).
     type: str
   storage_pool_id:
     description:
     - The id of the storage pool.
     - It is auto generated, hence should not be provided during
       creation of a storage pool.
-    - Mutually exclusive with storage_pool_name.
+    - Mutually exclusive with I(storage_pool_name).
     type: str
   protection_domain_name:
     description:
     - The name of the protection domain.
     - During creation of a pool, either protection domain name or id must be
       mentioned.
-    - Mutually exclusive with protection_domain_id.
+    - Mutually exclusive with I(protection_domain_id).
     type: str
   protection_domain_id:
     description:
     - The id of the protection domain.
     - During creation of a pool, either protection domain name or id must
       be mentioned.
-    - Mutually exclusive with protection_domain_name.
+    - Mutually exclusive with I(protection_domain_name).
     type: str
   media_type:
     description:
@@ -83,36 +84,36 @@ options:
     required: true
 notes:
   - TRANSITIONAL media type is supported only during modification.
-  - The check_mode is not supported.
+  - The I(check_mode) is not supported.
 '''
 
 EXAMPLES = r'''
 
 - name: Get the details of storage pool by name
   dellemc.powerflex.storagepool:
-    gateway_host: "{{gateway_host}}"
+    hostname: "{{hostname}}"
     username: "{{username}}"
     password: "{{password}}"
-    verifycert: "{{verifycert}}"
+    validate_certs: "{{validate_certs}}"
     storage_pool_name: "sample_pool_name"
     protection_domain_name: "sample_protection_domain"
     state: "present"
 
 - name: Get the details of storage pool by id
   dellemc.powerflex.storagepool:
-    gateway_host: "{{gateway_host}}"
+    hostname: "{{hostname}}"
     username: "{{username}}"
     password: "{{password}}"
-    verifycert: "{{verifycert}}"
+    validate_certs: "{{validate_certs}}"
     storage_pool_id: "abcd1234ab12r"
     state: "present"
 
 - name: Create a new storage pool by name
   dellemc.powerflex.storagepool:
-    gateway_host: "{{gateway_host}}"
+    hostname: "{{hostname}}"
     username: "{{username}}"
     password: "{{password}}"
-    verifycert: "{{verifycert}}"
+    validate_certs: "{{validate_certs}}"
     storage_pool_name: "ansible_test_pool"
     protection_domain_id: "1c957da800000000"
     media_type: "HDD"
@@ -120,10 +121,10 @@ EXAMPLES = r'''
 
 - name: Modify a storage pool by name
   dellemc.powerflex.storagepool:
-    gateway_host: "{{gateway_host}}"
+    hostname: "{{hostname}}"
     username: "{{username}}"
     password: "{{password}}"
-    verifycert: "{{verifycert}}"
+    validate_certs: "{{validate_certs}}"
     storage_pool_name: "ansible_test_pool"
     protection_domain_id: "1c957da800000000"
     use_rmcache: True
@@ -132,14 +133,13 @@ EXAMPLES = r'''
 
 - name: Rename storage pool by id
   dellemc.powerflex.storagepool:
-    gateway_host: "{{gateway_host}}"
+    hostname: "{{hostname}}"
     username: "{{username}}"
     password: "{{password}}"
-    verifycert: "{{verifycert}}"
+    validate_certs: "{{validate_certs}}"
     storage_pool_id: "abcd1234ab12r"
     storage_pool_new_name: "new_ansible_pool"
     state: "present"
-
 '''
 
 RETURN = r'''
@@ -151,7 +151,7 @@ changed:
 storage_pool_details:
     description: Details of the storage pool.
     returned: When storage pool exists
-    type: complex
+    type: dict
     contains:
         mediaType:
             description: Type of devices in the storage pool.
@@ -174,6 +174,19 @@ storage_pool_details:
         protectionDomainName:
             description: Name of the protection domain in which pool resides.
             type: str
+        "statistics":
+            description: Statistics details of the storage pool.
+            type: dict
+            contains:
+                "capacityInUseInKb":
+                    description: Total capacity of the storage pool.
+                    type: str
+                "unusedCapacityInKb":
+                    description: Unused capacity of the storage pool.
+                    type: str
+                "deviceIds":
+                    description: Device Ids of the storage pool.
+                    type: list
     sample: {
         "addressSpaceUsage": "Normal",
         "addressSpaceUsageType": "DeviceCapacityLimit",
@@ -235,6 +248,272 @@ storage_pool_details:
                 "rel": "/api/parent/relationship/protectionDomainId"
             }
         ],
+        "statistics": {
+                "BackgroundScannedInMB": 3466920,
+                "activeBckRebuildCapacityInKb": 0,
+                "activeEnterProtectedMaintenanceModeCapacityInKb": 0,
+                "aggregateCompressionLevel": "Uncompressed",
+                "atRestCapacityInKb": 1248256,
+                "backgroundScanCompareErrorCount": 0,
+                "backgroundScanFixedCompareErrorCount": 0,
+                "bckRebuildReadBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "bckRebuildWriteBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "capacityAvailableForVolumeAllocationInKb": 369098752,
+                "capacityInUseInKb": 2496512,
+                "capacityInUseNoOverheadInKb": 2496512,
+                "capacityLimitInKb": 845783040,
+                "compressedDataCompressionRatio": 0.0,
+                "compressionRatio": 1.0,
+                "currentFglMigrationSizeInKb": 0,
+                "deviceIds": [
+                ],
+                "enterProtectedMaintenanceModeCapacityInKb": 0,
+                "enterProtectedMaintenanceModeReadBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "enterProtectedMaintenanceModeWriteBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "exitProtectedMaintenanceModeReadBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "exitProtectedMaintenanceModeWriteBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "exposedCapacityInKb": 0,
+                "failedCapacityInKb": 0,
+                "fwdRebuildReadBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "fwdRebuildWriteBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "inMaintenanceCapacityInKb": 0,
+                "inMaintenanceVacInKb": 0,
+                "inUseVacInKb": 184549376,
+                "inaccessibleCapacityInKb": 0,
+                "logWrittenBlocksInKb": 0,
+                "maxCapacityInKb": 845783040,
+                "migratingVolumeIds": [
+                ],
+                "migratingVtreeIds": [
+                ],
+                "movingCapacityInKb": 0,
+                "netCapacityInUseInKb": 1248256,
+                "normRebuildCapacityInKb": 0,
+                "normRebuildReadBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "normRebuildWriteBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "numOfDeviceAtFaultRebuilds": 0,
+                "numOfDevices": 3,
+                "numOfIncomingVtreeMigrations": 0,
+                "numOfVolumes": 8,
+                "numOfVolumesInDeletion": 0,
+                "numOfVtrees": 8,
+                "overallUsageRatio": 73.92289,
+                "pendingBckRebuildCapacityInKb": 0,
+                "pendingEnterProtectedMaintenanceModeCapacityInKb": 0,
+                "pendingExitProtectedMaintenanceModeCapacityInKb": 0,
+                "pendingFwdRebuildCapacityInKb": 0,
+                "pendingMovingCapacityInKb": 0,
+                "pendingMovingInBckRebuildJobs": 0,
+                "persistentChecksumBuilderProgress": 100.0,
+                "persistentChecksumCapacityInKb": 414720,
+                "primaryReadBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "primaryReadFromDevBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "primaryReadFromRmcacheBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "primaryVacInKb": 92274688,
+                "primaryWriteBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "protectedCapacityInKb": 2496512,
+                "protectedVacInKb": 184549376,
+                "provisionedAddressesInKb": 2496512,
+                "rebalanceCapacityInKb": 0,
+                "rebalanceReadBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "rebalanceWriteBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "rfacheReadHit": 0,
+                "rfacheWriteHit": 0,
+                "rfcacheAvgReadTime": 0,
+                "rfcacheAvgWriteTime": 0,
+                "rfcacheIoErrors": 0,
+                "rfcacheIosOutstanding": 0,
+                "rfcacheIosSkipped": 0,
+                "rfcacheReadMiss": 0,
+                "rmPendingAllocatedInKb": 0,
+                "rmPendingThickInKb": 0,
+                "rplJournalCapAllowed": 0,
+                "rplTotalJournalCap": 0,
+                "rplUsedJournalCap": 0,
+                "secondaryReadBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "secondaryReadFromDevBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "secondaryReadFromRmcacheBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "secondaryVacInKb": 92274688,
+                "secondaryWriteBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "semiProtectedCapacityInKb": 0,
+                "semiProtectedVacInKb": 0,
+                "snapCapacityInUseInKb": 0,
+                "snapCapacityInUseOccupiedInKb": 0,
+                "snapshotCapacityInKb": 0,
+                "spSdsIds": [
+                    "abdfe71b00030001",
+                    "abdce71d00040001",
+                    "abdde71e00050001"
+                ],
+                "spareCapacityInKb": 84578304,
+                "targetOtherLatency": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "targetReadLatency": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "targetWriteLatency": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "tempCapacityInKb": 0,
+                "tempCapacityVacInKb": 0,
+                "thickCapacityInUseInKb": 0,
+                "thinAndSnapshotRatio": 73.92289,
+                "thinCapacityAllocatedInKm": 184549376,
+                "thinCapacityInUseInKb": 0,
+                "thinUserDataCapacityInKb": 2496512,
+                "totalFglMigrationSizeInKb": 0,
+                "totalReadBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "totalWriteBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "trimmedUserDataCapacityInKb": 0,
+                "unreachableUnusedCapacityInKb": 0,
+                "unusedCapacityInKb": 758708224,
+                "userDataCapacityInKb": 2496512,
+                "userDataCapacityNoTrimInKb": 2496512,
+                "userDataReadBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "userDataSdcReadLatency": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "userDataSdcTrimLatency": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "userDataSdcWriteLatency": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "userDataTrimBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "userDataWriteBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "volMigrationReadBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "volMigrationWriteBwc": {
+                    "numOccured": 0,
+                    "numSeconds": 0,
+                    "totalWeightInKb": 0
+                },
+                "volumeAddressSpaceInKb": 922XXXXX,
+                "volumeAllocationLimitInKb": 3707XXXXX,
+                "volumeIds": [
+                    "456afc7900XXXXXXXX"
+                ],
+                "vtreeAddresSpaceInKb": 92274688,
+                "vtreeIds": [
+                    "32b1681bXXXXXXXX",
+                ]
+        },
         "mediaType": "HDD",
         "name": "pool1",
         "numOfParallelRebuildRebalanceJobsPerDevice": 2,
@@ -285,8 +564,6 @@ from ansible_collections.dellemc.powerflex.plugins.module_utils.storage.dell\
 
 LOG = utils.get_logger('storagepool')
 
-MISSING_PACKAGES_CHECK = utils.pypowerflex_version_check()
-
 
 class PowerFlexStoragePool(object):
     """Class with StoragePool operations"""
@@ -309,11 +586,7 @@ class PowerFlexStoragePool(object):
                                     mutually_exclusive=mut_ex_args,
                                     required_one_of=required_one_of_args)
 
-        if MISSING_PACKAGES_CHECK and \
-                not MISSING_PACKAGES_CHECK['dependency_present']:
-            err_msg = MISSING_PACKAGES_CHECK['error_message']
-            LOG.error(err_msg)
-            self.module.fail_json(msg=err_msg)
+        utils.ensure_required_libs(self.module)
 
         try:
             self.powerflex_conn = utils.get_powerflex_gateway_host_connection(
@@ -387,6 +660,8 @@ class PowerFlexStoragePool(object):
                     self.module.fail_json(msg=err_msg)
                 elif len(pool_details) == 1:
                     pool_details = pool_details[0]
+                    statistics = self.powerflex_conn.storage_pool.get_statistics(pool_details['id'])
+                    pool_details['statistics'] = statistics if statistics else {}
                     pd_id = pool_details['protectionDomainId']
                     pd_name = self.get_protection_domain(
                         protection_domain_id=pd_id)['name']
@@ -502,7 +777,7 @@ class PowerFlexStoragePool(object):
             media_type = 'Transitional'
 
         result = dict(
-            storage_pool_details=None
+            storage_pool_details={}
         )
         changed = False
         pd_details = None
