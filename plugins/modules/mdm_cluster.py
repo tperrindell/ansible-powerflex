@@ -1063,23 +1063,25 @@ class PowerFlexMdmCluster(object):
     def check_ip_in_secondarys(self, standby_ip, cluster_details):
         """whether standby IPs present in secondary MDMs"""
 
-        for secondary_mdm in cluster_details['slaves']:
-            current_secondary_ips = secondary_mdm['ips']
-            for ips in standby_ip:
-                if ips in current_secondary_ips:
-                    LOG.info(self.exist_msg)
-                    return False
+        if 'slaves' in cluster_details:
+            for secondary_mdm in cluster_details['slaves']:
+                current_secondary_ips = secondary_mdm['ips']
+                for ips in standby_ip:
+                    if ips in current_secondary_ips:
+                        LOG.info(self.exist_msg)
+                        return False
         return True
 
     def check_ip_in_tbs(self, standby_ip, cluster_details):
         """whether standby IPs present in tie-breaker MDMs"""
 
-        for tb_mdm in cluster_details['tieBreakers']:
-            current_tb_ips = tb_mdm['ips']
-            for ips in standby_ip:
-                if ips in current_tb_ips:
-                    LOG.info(self.exist_msg)
-                    return False
+        if 'tieBreakers' in cluster_details:
+            for tb_mdm in cluster_details['tieBreakers']:
+                current_tb_ips = tb_mdm['ips']
+                for ips in standby_ip:
+                    if ips in current_tb_ips:
+                        LOG.info(self.exist_msg)
+                        return False
         return True
 
     def check_ip_in_standby(self, standby_ip, cluster_details):
